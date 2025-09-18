@@ -83,7 +83,7 @@ class PointCloudFeatLearning(nn.Module):
                 self.subsampled_patient_ids = pickle.load(handle)
             self.labels = np.load(os.path.join(self.raw_dir, 'labels.npy'))
             self.num_labels = len(np.unique(self.labels))
-        elif raw_dir == "pdo_data":
+        elif "pdo_data" in self.raw_dir:
             with open(osp.join(raw_dir, 'pc_pdo_treatment.pkl'), 'rb') as handle:
                 self.subsampled_pcs = pickle.load(handle)
                 # subsampled_pcs = [torch.tensor(subsampled_pcs[i], dtype=torch.float).to(device) for i in range(len(subsampled_pcs))]
@@ -91,6 +91,8 @@ class PointCloudFeatLearning(nn.Module):
             le = LabelEncoder()
             self.labels = le.fit_transform(np.load(osp.join(raw_dir, 'labels_pdo_treatment.npy')))
             self.num_labels = len(np.unique(self.labels))
+        else:
+            raise NotImplementedError(f"Dataset {raw_dir} not implemented")
             
         self.dimension = self.subsampled_pcs[0].shape[1]
         self.graph_feat = GraphFeatLearningLayer(n_weights, self.dimension, threshold, device)

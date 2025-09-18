@@ -27,3 +27,5 @@ persistence_models/
 persistence_covid.sh
 persistence_melanoma.sh
 melanoma_pc_persistence.npy
+*.pyc
+*.out
